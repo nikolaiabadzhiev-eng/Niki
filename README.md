@@ -1,5 +1,6 @@
 # My first project
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import numpy as np
 
 # Параметри на ракетата
@@ -30,4 +31,33 @@ plt.title("Височина на ракетата във времето")
 plt.xlabel("Време (секунди)")
 plt.ylabel("Височина (метри)")
 plt.grid()
+
+# Добавяне на ракета като изображение/фигура
+ax = plt.gca()
+# Местоположение на ракетата - в края на излитането
+rocket_x = time[-1]
+rocket_y = height[-1]
+
+# Тяло на ракетата (овал)
+body = patches.FancyBboxPatch(
+    (rocket_x-0.2, rocket_y-2), 0.4, 2,
+    boxstyle="round,pad=0.1",
+    linewidth=1, edgecolor='black', facecolor='gray', zorder=5)
+
+# Връх на ракетата (триъгълник)
+nose = patches.Polygon([
+    [rocket_x, rocket_y],
+    [rocket_x-0.2, rocket_y-0.2],
+    [rocket_x+0.2, rocket_y-0.2]
+], closed=True, color='red', zorder=6)
+
+# Дюзи (малък правоъгълник)
+nozzle = patches.Rectangle(
+    (rocket_x-0.08, rocket_y-2.0), 0.16, 0.2,
+    linewidth=1, edgecolor='black', facecolor='orange', zorder=5)
+
+ax.add_patch(body)
+ax.add_patch(nose)
+ax.add_patch(nozzle)
+
 plt.show()
